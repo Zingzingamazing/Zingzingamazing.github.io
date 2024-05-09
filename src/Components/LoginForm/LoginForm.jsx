@@ -9,7 +9,7 @@ const LoginForm = () => {
 <form action="">
     <h1>Login</h1>
     <div className='input-box'>
-        <input type="text" placeholder='Username' required />
+        <input type="text" placeholder='Email' required />
         <FaRegUserCircle className='icon' />
     </div>
     <div className='input-box'>
@@ -22,7 +22,7 @@ const LoginForm = () => {
     </div>
     <div>
         <button type='submit'>Login</button>
-        
+
         <div className='register-link'></div>
         <p>Dont have account <a href="#">Register</a></p>
     </div>
