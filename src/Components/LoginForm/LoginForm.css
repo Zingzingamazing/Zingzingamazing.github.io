@@ -2,21 +2,20 @@
 width: 420px;
 background: orange ;
 color: aliceblue;
-padding: 30px 40px;
+padding: 40px 40px;
 }
 
 .wrapper h1{
-font-size: 36px;
+font-size: 40px;
 text-align: center;    
 }
 
 .wrapper .input-box{
-    position: relative;
+    position:relative;
     width: 100%;
     height: 50px;
     background: white;
     margin: 30px 0;
-    border-radius: 40px;
 }
 
 .input-box input{
@@ -26,9 +25,10 @@ text-align: center;
     border: none;
     outline: none;
     border: 2px solid orange(255, 255, 255);
+    border-radius: 40px;
     font-size: 16px;
     color: rgb(3, 1, 1);
-    padding: 25px 45px 20pc 20px;
+    padding: 20px;
   
 }
 .input-box input::placeholder{
@@ -57,9 +57,14 @@ font-size: 16px;
     margin-right: 4px;
 }
 .remember-forgot a {
-color: rgb(238, 231, 231);
-text-decoration: none
+    
+color: rgb(224, 10, 10);
+font-weight: 600;
+text-decoration: none;
 }
+.remember-forgot a:hover {
+    text-decoration: underline;
+    }
 .wrapper button{
     width: 100%;
     height: 40px;
@@ -74,13 +79,22 @@ text-decoration: none
 }
 
 .wrapper .register-link{
-    font-size: 15px;
+    font-size: 14.5px;
     text-align: center;
     margin-top: 20px;
 }
-.register-link p a {
+.register-link p  {
   color: white;
   text-decoration: none;
   font-weight: 600;  
 }
 
+.register-link a {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;  
+  }
+
+.register-link p a:hover{
+    text-decoration: underline;
+}
