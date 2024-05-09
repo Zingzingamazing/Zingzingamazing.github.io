@@ -1,11 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
-import LoginForm from './Components/LoginForm/LoginForm';
+import LogupForm from './Components/LogupForm/LogupForm';
 
 function App() {
   return (
     <div>
-      <LoginForm/>
+      <LogupForm/>
     </div>
   );
 }

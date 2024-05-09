@@ -1,5 +1,6 @@
 .wrapper{
     width: 420px;
+    height: 500px;
     background: orange ;
     color: aliceblue;
     padding: 40px 40px;
@@ -76,6 +77,7 @@
         font-size: 16px;
         color: rgb(241, 241, 241);
         font-size: 700;
+        margin-top: 22px;
     }
     
     .wrapper .register-link{
