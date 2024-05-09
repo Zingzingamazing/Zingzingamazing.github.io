@@ -23,7 +23,7 @@ const LoginForm = () => {
          <div>
              <button type="submit">Login</button>
               <div className="register-link"></div>
-                <p>Dont have account <a href="./LogupForm/LogupForm.jsx">Register</a></p>
+                <p>Dont have account <a href="#">Register</a></p>
         </div>
 
 </form>

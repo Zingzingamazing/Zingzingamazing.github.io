@@ -3,38 +3,31 @@ import './LogupForm.css';
 import { FaRegUserCircle, } from "react-icons/fa";
 import { FaLock } from "react-icons/fa";
 
-const LoginForm = () => {
-  return (
-    <div className='wrapper'>
-<form action="">
-    <h1>Log Up</h1>
-    <div className='input-box'>
-        <input type="text" placeholder='Username' required />
-        <FaRegUserCircle className='icon' />
-    </div>
-    <div className='input-box'>
-        <input type="text" placeholder='Email' required />
-        <FaRegUserCircle className='icon' />
-    </div>
-    <div className='input-box'>
-        <input type="password" placeholder='Password' required />
-        <FaLock className='icon'/>
-    </div>
-    <div className='remember-forgot'>
-<label><input type="checkbox" />Remember me</label>
-<a href="#"> Forgot Password? </a>
-    </div>
-    <div>
-        <button type='submit'>Login</button>
+const LogupForm = () => {
+    return (
+        <div className='wrapper'>
+    <form action="">
+            <h1>Log Up</h1>
+            <div className="input-box">
+                 <input type="text" placeholder='Full Name' required />
+                 <FaRegUserCircle className='icon' />
+                </div>
+                <div className="input-box">
+                 <input type="text" placeholder='Email' required />
+                 <FaRegUserCircle className='icon' />
+                </div>
+              <div className="input-box">
+                 <input type="password" placeholder='Password' required />
+                 <FaLock className='icon'/>
 
-        <div className='register-link'></div>
-        <p>Dont have account <a href="#">Register</a></p>
-    </div>
+                 <button type="submit">Log up</button>
+                  <div className="register-link"></div>
+                    <p>Already have account <a href="#">Log in</a></p>
+            </div>
+    
+    </form>
+        </div>
 
-</form>
-
-    </div>
   )
 }
-
-export default LoginForm
+export default LogupForm
