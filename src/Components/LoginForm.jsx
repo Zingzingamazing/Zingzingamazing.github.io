@@ -10,7 +10,6 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-  const [rememberMe, setRememberMe] = useState(false);
   const history = useHistory(); // Initialize useHistory hook
 
   const handleSubmit = async (e) => {
