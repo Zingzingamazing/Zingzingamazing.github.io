@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom'; // Import useHistory hook
-import { auth } from '../firebase'; // Import Firebase auth
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import './LoginForm.css';
-import { FaRegUserCircle } from "react-icons/fa";
-import { FaLock } from "react-icons/fa";
+import { useHistory } from 'react-router-dom';
+import { auth } from '../../firebase';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import './login.css';
+import { FaRegUserCircle, FaLock } from "react-icons/fa";
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-  const history = useHistory(); // Initialize useHistory hook
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // User logged in successfully, navigate to dashboard or desired page
-      history.push('https://www.youtube.com/watch?v=pkJ95d_j0TA');
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        history.push('/home');
+        window.location.href = window.location.href;
+      }
     } catch (error) {
       console.error('Login Error:', error.message);
+      setErrorMessage('Incorrect email or password. Please try again.');
     }
   };
 
@@ -29,7 +32,7 @@ const LoginForm = () => {
         <h1>Login</h1>
         <div className="input-box">
           <input
-            type="text"
+            type="email"
             placeholder='Email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -38,8 +41,8 @@ const LoginForm = () => {
           <FaRegUserCircle className='icon' />
         </div>
         <div className="input-box">
-        <input
-            type={showPassword ? "text" : "password"} // Toggle password visibility based on state
+          <input
+            type={showPassword ? "text" : "password"}
             placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -49,20 +52,21 @@ const LoginForm = () => {
         </div>
         <div className="show-forgot">
           <label>
-          <input
-            type="checkbox"
-            id="showPasswordCheckbox"
-            checked={showPassword}
-            onChange={() => setShowPassword(!showPassword)}
-          />
+            <input
+              type="checkbox"
+              id="showPasswordCheckbox"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            />
             Show password
           </label>
           <a href="#">Forgot Password? </a>
         </div>
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <div>
           <button type="submit">Login</button>
           <div className="register-link"></div>
-          <p>Don't have an account <a href="/logup">Register</a></p>
+          <p>Don't have an account <a href="/signup">Register</a></p>
         </div>
       </form>
     </div>

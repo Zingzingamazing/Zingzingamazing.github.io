@@ -1,8 +1,8 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { auth } from '../firebase.js';
-import './LogupForm.css';
+import { auth } from '../../firebase.js';
+import './signup.css';
 import { FaRegUserCircle, FaLock } from "react-icons/fa";
 
 const LogupForm = () => {
