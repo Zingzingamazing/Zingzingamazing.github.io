@@ -1,6 +1,6 @@
 .wrapper{
-    width: 420px;
-    height: 500px;
+    width: 450px;
+    height: 50%;
     background: orange ;
     color: aliceblue;
     padding: 40px 40px;
@@ -101,3 +101,7 @@
         text-decoration: underline;
     }
     
+   
+.input-box .show-password-checkbox{
+    font-weight: 700;
+}

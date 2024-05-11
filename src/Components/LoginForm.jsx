@@ -9,6 +9,7 @@ import { FaLock } from "react-icons/fa";
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [rememberMe, setRememberMe] = useState(false);
   const history = useHistory(); // Initialize useHistory hook
 
@@ -38,8 +39,8 @@ const LoginForm = () => {
           <FaRegUserCircle className='icon' />
         </div>
         <div className="input-box">
-          <input
-            type="password"
+        <input
+            type={showPassword ? "text" : "password"} // Toggle password visibility based on state
             placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -47,16 +48,17 @@ const LoginForm = () => {
           />
           <FaLock className='icon'/>
         </div>
-        <div className="remember-forgot">
+        <div className="show-forgot">
           <label>
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-            />
-            Remember me
+          <input
+            type="checkbox"
+            id="showPasswordCheckbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+            Show password
           </label>
-          <a href="#"> Forgot Password? </a>
+          <a href="#">Forgot Password? </a>
         </div>
         <div>
           <button type="submit">Login</button>

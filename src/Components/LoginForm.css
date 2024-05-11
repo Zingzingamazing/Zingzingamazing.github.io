@@ -1,5 +1,6 @@
 .wrapper{
-width: 420px;
+width: 450px;
+height: auto;
 background: orange ;
 color: aliceblue;
 padding: 40px 40px;
@@ -45,24 +46,24 @@ color: black;
 transform:  translateY(-50%);
 font-size: 16px;
 }
-.wrapper .remember-forgot{
+.wrapper .show-forgot{
     display: flex;
     justify-content: space-between;
     font-size: 15px;
     margin: -15px 0 15px;
 }
 
-.remember-forgot label input{
+.show-forgot label input{
     accent-color: rgb(14, 1, 1);
     margin-right: 4px;
 }
-.remember-forgot a {
+.show-forgot a {
     
 color: rgb(224, 10, 10);
 font-weight: 600;
 text-decoration: none;
 }
-.remember-forgot a:hover {
+.show-forgot a:hover {
     text-decoration: underline;
     }
 .wrapper button{

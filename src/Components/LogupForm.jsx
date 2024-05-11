@@ -1,30 +1,28 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom'; // Import useHistory hook
-import { auth } from '../firebase.js'; // Import Firebase auth
+import { useHistory } from 'react-router-dom';
+import { auth } from '../firebase.js';
 import './LogupForm.css';
-import { FaRegUserCircle } from "react-icons/fa";
-import { FaLock } from "react-icons/fa";
-
+import { FaRegUserCircle, FaLock } from "react-icons/fa";
 
 const LogupForm = () => {
-    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const history = useHistory(); // Initialize useHistory hook
-
+    const [showPassword, setShowPassword] = useState(false);
+    const history = useHistory();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
         try {
-            // Create user with email and password
-            console.log(auth, email, password);
-            const result = await createUserWithEmailAndPassword(auth, email, password);
-            // User signed up successfully, navigate to dashboard or desired page
-            history.push('./login');
+            if (password !== confirmPassword) {
+                throw new Error("Passwords do not match");
+            }
+
+            await createUserWithEmailAndPassword(auth, email, password);
+            history.push('/login');
         } catch (error) {
-            console.log("err", error);
             console.error('Signup Error:', error.message);
             setErrorMessage(error.message);
         }
@@ -34,16 +32,6 @@ const LogupForm = () => {
         <div className='wrapper'>
             <form onSubmit={handleSignUp}>
                 <h1>Sign Up</h1>
-                <div className="input-box">
-                    <input
-                        type="text"
-                        placeholder='Full Name'
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        required
-                    />
-                    <FaRegUserCircle className='icon' />
-                </div>
                 <div className="input-box">
                     <input
                         type="email"
@@ -56,13 +44,31 @@ const LogupForm = () => {
                 </div>
                 <div className="input-box">
                     <input
-                        type="password"
-                        placeholder='Password'
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder='Create password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                     <FaLock className='icon' />
+                </div>
+                <div className="input-box">
+                    <input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder='Confirm password'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                    <FaLock className='icon' />
+                </div>
+                <div className="show-password-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={showPassword}
+                        onChange={() => setShowPassword(!showPassword)}
+                    />
+                    <label>Show Password</label>
                 </div>
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
                 <div>
