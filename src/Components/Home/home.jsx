@@ -1,8 +1,12 @@
-// Dashboard.js
 import React from 'react';
 import './home.css';
 
-const Dashboard = () => {
+const Home = () => {
+  const handleLogout = () => {
+    // Redirect to the login page when the logout button is clicked
+    window.location.href = "/login";
+  };
+
   return (
     <div className="dashboard-container">
       <div className="menu-bar">
@@ -13,9 +17,10 @@ const Dashboard = () => {
         </div>
         <div className="user-icon">
           <img src="user-icon.png" alt="User Icon" />
-          <div className="user-dropdown">
-            <button>Logout</button>
-          </div>
+        </div>
+        <div>
+          {/* Call handleLogout function when the button is clicked */}
+          <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
       <div className="advertisement-list">
@@ -26,4 +31,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Home;
