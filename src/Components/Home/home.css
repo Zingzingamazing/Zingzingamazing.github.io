@@ -1,52 +1,109 @@
 /* Dashboard.css */
 .dashboard-container {
-    width: 50%;
-    height: 100%;
-    position: fixed;
-    top: 5px;
-    left: 25%;
-    right: 25%;
-    align-items: center;
-  }
-  
-  .menu-bar {
-    background-color:orange;
-    color: #e21212;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-  }
-  
-  .search-bar {
-    display: flex;
-    height: 100%;
-    width: 20px;
-    align-items: center;
-  }
-  
-  .search-bar input[type="text"] {
-    padding: 5px;
-    margin-right: 10px;
-  }
-  
-  .user-icon {
-    position: relative;
-  }
-  
-  .user-icon img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-  
-  .user-icon:hover .user-dropdown {
-    display: block;
-  }
-  
-  .advertisement-list {
-    margin-top: 20px;
-    /* Add styles for displaying advertisement list */
-  }
-  
+  width: 50%;
+  height: 100%;
+  position: fixed;
+  top: 5px;
+  left: 25%;
+  right: 25%;
+  align-items: center;
+}
+
+.menu-bar {
+  background-color: orange;
+  color: #e21212;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.nav-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.search-bar {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.search-bar input[type="text"] {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  position: relative;
+}
+
+.user-icon img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.user-icon:hover .user-dropdown {
+  display: block;
+}
+
+.advertisement-list {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.advertisement-card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.placeholder-image {
+  width: 100%;
+  height: 150px;
+  background-color: #e0e0e0;
+  margin-bottom: 10px;
+}
+
+.card-content .text {
+  font-size: 14px;
+  color: #888;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.card-footer .dot {
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.card-footer .likes {
+  font-size: 14px;
+  color: #888;
+}
