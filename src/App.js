@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'; // Im
 import signin from './Components/sign/login';
 import signup from './Components/signup/signup';
 import home from './Components/Home/home'
+import adcampaign from './Components/Home/adcampaign'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/signin" component={signin} />
         <Route path="/signup" component={signup} />
         <Route path="/home" component={home} />
+        <Route path="/adcampaign" component={adcampaign} />
 
         {/* Set the default route to render LogupForm */}
         <Route path="/" component={signin} />

@@ -3,7 +3,6 @@ import './home.css';
 
 const Home = () => {
   const handleLogout = () => {
-    // Redirect to the login page when the logout button is clicked
     window.location.href = "/login";
   };
 
@@ -17,6 +16,7 @@ const Home = () => {
           <a href="/">Features</a>
           <a href="/">Blog</a>
           <a href="/">Products</a>
+          <a href="/adcampaign">Add Campaign</a>
         </nav>
         <div className="user-section">
           <img src="user-icon.png" alt="User Icon" className="user-icon" />
