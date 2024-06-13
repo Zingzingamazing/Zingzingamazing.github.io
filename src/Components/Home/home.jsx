@@ -13,13 +13,10 @@ const Home = () => {
         <nav className="nav-links">
           <a href="/">Home</a>
           <a href="/">About</a>
-          <a href="/">Features</a>
-          <a href="/">Blog</a>
-          <a href="/">Products</a>
+          
           <a href="/adcampaign">Add Campaign</a>
         </nav>
         <div className="user-section">
-          <img src="user-icon.png" alt="User Icon" className="user-icon" />
           <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
