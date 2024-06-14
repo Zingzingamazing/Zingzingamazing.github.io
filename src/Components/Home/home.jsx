@@ -14,14 +14,14 @@ const Home = () => {
           <a href="/">Home</a>
           <a href="/">About</a>
           
-          <a href="/adcampaign">Add Campaign</a>
+          <a href="./Adcampaign">Add Your Campaign</a>
         </nav>
         <div className="user-section">
           <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
       <div className="advertisement-list">
-        {Array.from({ length: 12 }).map((_, index) => (
+        {Array.from({ length: 8 }).map((_, index) => (
           <div className="advertisement-card" key={index}>
             <div className="placeholder-image"></div>
             <div className="card-content">

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { FaRegUserCircle, FaLock } from "react-icons/fa";
 import './signup.css';
 
 const SignUpForm = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const history = useHistory();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -21,17 +24,21 @@ const SignUpForm = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ username, email, password })
       });
 
       const data = await response.json();
-      if (response.ok) {
-        // handle successful signup
-        console.log('Signup successful:', data);
-        window.location.href = '/login'; // redirect to login page
-      } else {
+      if (response.status === 409) {
+        setErrorMessage('User already exists');
+        return;
+      } else if (!response.ok) {
         setErrorMessage(data.message || 'Error occurred during sign up. Please try again.');
+        return;
       }
+
+      // Redirect to login page after successful signup
+      history.push('/signin');
+      window.location.reload(); // Refresh the page
     } catch (error) {
       console.error('Signup Error:', error);
       setErrorMessage(error.message);
@@ -42,6 +49,16 @@ const SignUpForm = () => {
     <div className='wrapper'>
       <form onSubmit={handleSignUp}>
         <h1>Sign Up</h1>
+        <div className="input-box">
+          <input
+            type="text"
+            placeholder='Username'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <FaRegUserCircle className='icon' />
+        </div>
         <div className="input-box">
           <input
             type="email"
@@ -84,7 +101,7 @@ const SignUpForm = () => {
         <div>
           <button type="submit">Sign Up</button>
           <div className="register-link"></div>
-          <p>Already have an account? <a href="/login">Log in</a></p>
+          <p>Already have an account? <a href="/signin">Log in</a></p>
         </div>
       </form>
     </div>

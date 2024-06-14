@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { FaRegUserCircle, FaLock } from "react-icons/fa";
+import { AuthContext } from '../../AuthContext'; // Adjust the path as needed
 import './login.css';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const { login } = useContext(AuthContext);
+  const history = useHistory();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch('http://localhost:3001/login', {
@@ -19,23 +23,32 @@ const LoginForm = () => {
         body: JSON.stringify({ email, password })
       });
 
-      const data = await response.json();
-      if (response.ok) {
-        // handle successful login
-        console.log('Login successful:', data);
-        window.location.href = '/home'; // redirect to home page
-      } else {
-        setErrorMessage(data.message || 'Incorrect email or password. Please try again.');
+      if (response.status === 401) {
+        setErrorMessage('Invalid email or password');
+        return;
+      } else if (!response.ok) {
+        const data = await response.json();
+        setErrorMessage(data.message || 'Error occurred during login. Please try again.');
+        return;
       }
+
+      const data = await response.json();
+
+      // Save the user data in context
+      login(data);
+
+      // Redirect to home page after successful login
+      history.push('/home');
+      window.location.reload(); // Reload the page to ensure context is properly set
     } catch (error) {
       console.error('Login Error:', error);
-      setErrorMessage('An error occurred. Please try again.');
+      setErrorMessage('Incorrect email or password. Please try again.');
     }
   };
 
   return (
     <div className='wrapper'>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSubmit}>
         <h1>Login</h1>
         <div className="input-box">
           <input
@@ -49,7 +62,7 @@ const LoginForm = () => {
         </div>
         <div className="input-box">
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
             placeholder='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -57,23 +70,19 @@ const LoginForm = () => {
           />
           <FaLock className='icon' />
         </div>
-        <div className="show-forgot">
-          <label>
-            <input
-              type="checkbox"
-              id="showPasswordCheckbox"
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
-            />
-            Show password
-          </label>
-          <a href="#">Forgot Password? </a>
+        <div className="show-password-checkbox">
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          <label>Show Password</label>
         </div>
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         <div>
           <button type="submit">Login</button>
           <div className="register-link"></div>
-          <p>Don't have an account <a href="/signup">Register</a></p>
+          <p>Don't have an account? <a href="/signup">Sign up</a></p>
         </div>
       </form>
     </div>
