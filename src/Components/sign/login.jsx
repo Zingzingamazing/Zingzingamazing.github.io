@@ -1,34 +1,41 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { auth } from '../../firebase';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import './login.css';
 import { FaRegUserCircle, FaLock } from "react-icons/fa";
+import './login.css';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const history = useHistory();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      if (userCredential.user) {
-        history.push('/home');
-        window.location.href = window.location.href;
+      const response = await fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // handle successful login
+        console.log('Login successful:', data);
+        window.location.href = '/home'; // redirect to home page
+      } else {
+        setErrorMessage(data.message || 'Incorrect email or password. Please try again.');
       }
     } catch (error) {
-      console.error('Login Error:', error.message);
-      setErrorMessage('Incorrect email or password. Please try again.');
+      console.error('Login Error:', error);
+      setErrorMessage('An error occurred. Please try again.');
     }
   };
 
   return (
     <div className='wrapper'>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <h1>Login</h1>
         <div className="input-box">
           <input
@@ -48,7 +55,7 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <FaLock className='icon'/>
+          <FaLock className='icon' />
         </div>
         <div className="show-forgot">
           <label>
