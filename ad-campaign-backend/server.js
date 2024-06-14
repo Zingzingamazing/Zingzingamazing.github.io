@@ -3,12 +3,15 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -24,6 +27,17 @@ connection.connect(err => {
     }
     console.log('Connected to MySQL as id ' + connection.threadId);
 });
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+
+const upload = multer({ storage });
 
 app.post('/register', (req, res) => {
     const { username, email, password } = req.body;
@@ -95,17 +109,30 @@ app.get('/users', (req, res) => {
     });
 });
 
-app.post('/ads', (req, res) => {
+app.post('/ads', upload.single('image'), (req, res) => {
     const { userId, title, description } = req.body;
+    const imageUrl = `/uploads/${req.file.filename}`;
 
-    const query = 'INSERT INTO ads (user_id, title, description) VALUES (?, ?, ?)';
-    connection.query(query, [userId, title, description], (err, results) => {
+    const query = 'INSERT INTO ads (user_id, title, description, image_url) VALUES (?, ?, ?, ?)';
+    connection.query(query, [userId, title, description, imageUrl], (err, results) => {
         if (err) {
             console.error('Error uploading ad:', err);
             res.status(500).json({ message: 'Error uploading ad' });
             return;
         }
         res.status(201).json({ message: 'Ad uploaded successfully' });
+    });
+});
+
+app.get('/ads', (req, res) => {
+    const query = 'SELECT * FROM ads';
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching ads:', err);
+            res.status(500).json({ message: 'Error fetching ads' });
+            return;
+        }
+        res.status(200).json(results);
     });
 });
 

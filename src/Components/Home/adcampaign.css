@@ -1,15 +1,46 @@
-/* adcampaign.css */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #d3d3d3;
+}
+
+.menu-bar {
+  background-color: orange;
+  color: #e21212;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: fixed; /* Make the menu bar fixed */
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  height: 60px; /* Adjust the height if necessary */
+  z-index: 1000; /* Ensure it stays on top */
+  border-radius: 10px;
+}
+
 .ad-campaign-container {
-  max-width: 600px;
-  margin: 50px auto;
+  max-width: 500px;
+  margin: 120px auto; /* Adjust margin-top to make space for the fixed menu bar */
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 2px;
+  background-color: #fff; /* Add a background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a slight shadow for better visibility */
 }
 
 .ad-campaign-container h2 {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  border-radius: 10px;
 }
 
 .form-group {
@@ -41,7 +72,7 @@ button {
   background-color: #333;
   color: #fff;
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
   cursor: pointer;
 }
 

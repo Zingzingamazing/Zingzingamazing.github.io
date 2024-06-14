@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './home.css';
 
 const Home = () => {
+  const [ads, setAds] = useState([]);
+
+  useEffect(() => {
+    const fetchAds = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/ads');
+        const data = await response.json();
+        setAds(data);
+      } catch (error) {
+        console.error('Error fetching ads:', error);
+      }
+    };
+
+    fetchAds();
+  }, []);
+
   const handleLogout = () => {
     window.location.href = "/login";
   };
@@ -13,7 +29,6 @@ const Home = () => {
         <nav className="nav-links">
           <a href="/">Home</a>
           <a href="/">About</a>
-          
           <a href="./Adcampaign">Add Your Campaign</a>
         </nav>
         <div className="user-section">
@@ -21,12 +36,15 @@ const Home = () => {
         </div>
       </div>
       <div className="advertisement-list">
-        {Array.from({ length: 8 }).map((_, index) => (
-          <div className="advertisement-card" key={index}>
-            <div className="placeholder-image"></div>
+        {ads.map((ad) => (
+          <div className="advertisement-card" key={ad.id}>
+            <div
+              className="advertisement-image"
+              style={{ backgroundImage: `url(http://localhost:3001${ad.image_url})` }}
+            ></div>
             <div className="card-content">
-              <div className="text">LOOKING FOR A......</div>
-              <div className="text">LOOKING FOR A......</div>
+              <div className="advertisement-title">{ad.title}</div>
+              <div className="advertisement-description">{ad.description}</div>
             </div>
             <div className="card-footer">
               <span className="dot"></span>
