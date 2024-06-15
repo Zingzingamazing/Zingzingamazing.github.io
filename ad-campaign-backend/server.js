@@ -110,22 +110,47 @@ app.get('/users', (req, res) => {
 });
 
 app.post('/ads', upload.single('image'), (req, res) => {
-    const { userId, title, description } = req.body;
+    const { userId, title, description, userType } = req.body;
     const imageUrl = `/uploads/${req.file.filename}`;
 
-    const query = 'INSERT INTO ads (user_id, title, description, image_url) VALUES (?, ?, ?, ?)';
-    connection.query(query, [userId, title, description, imageUrl], (err, results) => {
+    const query = 'INSERT INTO ads (user_id, title, description, image_url, user_type, approved) VALUES (?, ?, ?, ?, ?, 0)';
+    connection.query(query, [userId, title, description, imageUrl, userType], (err, results) => {
         if (err) {
             console.error('Error uploading ad:', err);
             res.status(500).json({ message: 'Error uploading ad' });
             return;
         }
-        res.status(201).json({ message: 'Ad uploaded successfully' });
+        res.status(201).json({ message: 'Ad submitted for approval' });
+    });
+});
+
+app.get('/ads/pending', (req, res) => {
+    const query = 'SELECT * FROM ads WHERE approved = 0';
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching pending ads:', err);
+            res.status(500).json({ message: 'Error fetching pending ads' });
+            return;
+        }
+        res.status(200).json(results);
+    });
+});
+
+app.post('/ads/approve/:id', (req, res) => {
+    const adId = req.params.id;
+    const query = 'UPDATE ads SET approved = 1 WHERE id = ?';
+    connection.query(query, [adId], (err, results) => {
+        if (err) {
+            console.error('Error approving ad:', err);
+            res.status(500).json({ message: 'Error approving ad' });
+            return;
+        }
+        res.status(200).json({ message: 'Ad approved successfully' });
     });
 });
 
 app.get('/ads', (req, res) => {
-    const query = 'SELECT * FROM ads';
+    const query = 'SELECT * FROM ads WHERE approved = 1';
     connection.query(query, (err, results) => {
         if (err) {
             console.error('Error fetching ads:', err);

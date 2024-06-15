@@ -1,106 +1,67 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './adcampaign.css';
-import './home.css'; // Ensure that the menu bar styles are also included
 
 const AdCampaign = () => {
-  const [userId, setUserId] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+    const [userType, setUserType] = useState('');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [image, setImage] = useState(null);
 
-  const handleLogout = () => {
-    window.location.href = "/login";
-  };
+    const handleUserTypeChange = (event) => {
+        setUserType(event.target.value);
+    };
 
-  const handleAdUpload = async (event) => {
-    event.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('image', image);
+        formData.append('userType', userType);
 
-    const formData = new FormData();
-    formData.append('userId', userId);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('image', image);
+        try {
+            await axios.post('/ads', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            alert('Ad submitted for approval!');
+        } catch (error) {
+            console.error('Error uploading ad:', error);
+        }
+    };
 
-    try {
-      const response = await fetch('http://localhost:3001/ads', {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        console.log('Ad uploaded successfully:', data);
-        alert('Ad submitted!');
-        window.location.href = '/home';
-      } else {
-        setErrorMessage(data.message || 'Error occurred during ad upload. Please try again.');
-      }
-    } catch (error) {
-      console.error('Ad Upload Error:', error);
-      setErrorMessage('An error occurred. Please try again.');
-    }
-  };
-
-  return (
-    <div>
-      <div className="menu-bar">
-        <div className="logo">Team 007</div>
-        <nav className="nav-links">
-          <a href="/home">Home</a>
-          <a href="/home">About</a>
-        </nav>
-        <div className="user-section">
-          <button onClick={handleLogout}>Logout</button>
+    return (
+        <div className="ad-campaign-container">
+            <h2>Create Ad Campaign</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>
+                        Are you a business owner or a public user?
+                        <select value={userType} onChange={handleUserTypeChange}>
+                            <option value="">Select</option>
+                            <option value="business">Business Owner</option>
+                            <option value="public">Public User</option>
+                        </select>
+                    </label>
+                </div>
+                <div className="form-group">
+                    <label>Title</label>
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                    <label>Description</label>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
+                </div>
+                <div className="form-group">
+                    <label>Upload Image</label>
+                    <input type="file" onChange={(e) => setImage(e.target.files[0])} required />
+                </div>
+                <button type="submit">Submit Ad</button>
+            </form>
         </div>
-      </div>
-      <div className="ad-campaign-container">
-        <h2>Create a New Ad Campaign</h2>
-        <form onSubmit={handleAdUpload}>
-          <div className="form-group">
-            <label htmlFor="userId">User ID</label>
-            <input
-              type="text"
-              id="userId"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            ></textarea>
-          </div>
-          <div className="form-group">
-            <label htmlFor="image">Image</label>
-            <input
-              type="file"
-              id="image"
-              onChange={(e) => setImage(e.target.files[0])}
-              required
-            />
-          </div>
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default AdCampaign;
