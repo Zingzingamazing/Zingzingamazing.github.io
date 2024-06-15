@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle, FaLock } from "react-icons/fa";
 import './signup.css';
 
@@ -10,7 +10,7 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();  // Updated variable name
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ const SignUpForm = () => {
       }
 
       // Redirect to login page after successful signup
-      history.push('/signin');
+      navigate('/signin');  // Updated redirection
       window.location.reload(); // Refresh the page
     } catch (error) {
       console.error('Signup Error:', error);

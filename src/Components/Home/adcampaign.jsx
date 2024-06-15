@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './adcampaign.css';
 
 const AdCampaign = () => {
@@ -7,10 +8,13 @@ const AdCampaign = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
+    const navigate = useNavigate();
 
     const handleUserTypeChange = (event) => {
         setUserType(event.target.value);
     };
+      
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -21,7 +25,7 @@ const AdCampaign = () => {
         formData.append('userType', userType);
 
         try {
-            await axios.post('/ads', formData, {
+            await axios.post('http://localhost:3001/ads', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -32,13 +36,27 @@ const AdCampaign = () => {
         }
     };
 
+    const handleLogout = () => {
+        navigate('/login'); // Use navigate here
+      };
+    
     return (
         <div className="ad-campaign-container">
+             <div className="menu-bar">
+        <div className="logo">Team 007</div>
+        <nav className="nav-links">
+          <a href="/">Home</a>
+          <a href="/">About</a>          
+        </nav>
+        <div className="user-section">
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      </div>
             <h2>Create Ad Campaign</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>
-                        Are you a business owner or a public user?
+                        Are you a business owner or a public user? 
                         <select value={userType} onChange={handleUserTypeChange}>
                             <option value="">Select</option>
                             <option value="business">Business Owner</option>

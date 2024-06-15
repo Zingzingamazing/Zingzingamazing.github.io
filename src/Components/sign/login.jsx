@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle, FaLock } from "react-icons/fa";
 import { AuthContext } from '../../AuthContext'; // Adjust the path as needed
 import './login.css';
@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useContext(AuthContext);
-  const history = useHistory();
+  const navigate = useNavigate();  // Updated variable name
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ const LoginForm = () => {
       login(data);
 
       // Redirect to home page after successful login
-      history.push('/home');
+      navigate('/home');  // Updated redirection
       window.location.reload(); // Reload the page to ensure context is properly set
     } catch (error) {
       console.error('Login Error:', error);

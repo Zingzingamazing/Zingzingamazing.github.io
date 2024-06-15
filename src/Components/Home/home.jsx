@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './home.css';
 
 const Home = () => {
   const [ads, setAds] = useState([]);
+  const navigate = useNavigate(); // Add this line
 
   useEffect(() => {
     const fetchAds = async () => {
       try {
         const response = await fetch('http://localhost:3001/ads');
         const data = await response.json();
-        setAds(data);
+        
+        if (Array.isArray(data)) {
+          setAds(data);
+        } else {
+          console.error('Fetched data is not an array:', data);
+          setAds([]);
+        }
       } catch (error) {
         console.error('Error fetching ads:', error);
+        setAds([]);
       }
     };
 
@@ -19,7 +28,7 @@ const Home = () => {
   }, []);
 
   const handleLogout = () => {
-    window.location.href = "/login";
+    navigate('/login'); // Use navigate here
   };
 
   return (
@@ -29,7 +38,8 @@ const Home = () => {
         <nav className="nav-links">
           <a href="/">Home</a>
           <a href="/">About</a>
-          <a href="./Adcampaign">Add Your Campaign</a>
+          <a href="/adcampaign">Add Your Campaign</a>
+          
         </nav>
         <div className="user-section">
           <button onClick={handleLogout}>Logout</button>

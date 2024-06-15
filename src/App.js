@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginForm from './Components/sign/login';
 import SignUpForm from './Components/signup/signup';
 import Home from './Components/Home/home';
@@ -12,15 +12,15 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Switch>
-          <Route path="/signin" component={LoginForm} />
-          <Route path="/signup" component={SignUpForm} />
-          <Route path="/home" component={Home} />
-          <Route path="/adcampaign" component={AdCampaign} />
-          <Route path="/admin" component={AdminPanel} />
-          <Route path="/users" component={Users} />
-          <Route path="/" component={LoginForm} />
-        </Switch>
+        <Routes>
+          <Route path="/signin" element={<LoginForm />} />
+          <Route path="/signup" element={<SignUpForm />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/adcampaign" element={<AdCampaign />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/" element={<LoginForm />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );
