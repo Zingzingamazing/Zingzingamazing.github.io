@@ -4,8 +4,8 @@ import LoginForm from './Components/sign/login';
 import SignUpForm from './Components/signup/signup';
 import Home from './Components/Home/home';
 import AdCampaign from './Components/Home/adcampaign';
-import AdminPanel from './Components/AdminPanel';
-import Users from './Components/Users';
+import AdminPanel from './AdminPanel';
+import Users from './Users';
 import { AuthProvider } from './AuthContext';
 
 function App() {

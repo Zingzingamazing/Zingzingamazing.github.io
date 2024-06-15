@@ -1,9 +1,17 @@
+// Users.jsx
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Users = () => {
+const Users = ({ isAdmin }) => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isAdmin) {
+      navigate('/admin/login');
+      return;
+    }
+
     const fetchUsers = async () => {
       try {
         const response = await fetch('http://localhost:3001/users');
@@ -15,7 +23,7 @@ const Users = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [isAdmin, navigate]);
 
   return (
     <div>
