@@ -6,6 +6,7 @@ import Home from './Components/Home/home';
 import AdCampaign from './Components/Home/adcampaign';
 import AdminPanel from './AdminPanel';
 import Users from './Users';
+import AdminLogin from './AdminLogin'; // Assuming this is the admin login component
 import { AuthProvider } from './AuthContext';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/adcampaign" element={<AdCampaign />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/admin/login" element={<AdminLogin />} /> {/* Admin login route */}
           <Route path="/" element={<LoginForm />} />
         </Routes>
       </Router>
