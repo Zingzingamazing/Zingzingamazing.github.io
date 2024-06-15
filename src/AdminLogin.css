@@ -9,14 +9,14 @@
     background-color: #f5f5f5;
 }
 
-h2 {
+.h2 {
     margin-bottom: 20px;
     color: #333;
     font-size: 24px;
     font-weight: 500;
 }
 
-input[type="text"], input[type="password"] {
+.input[type="text"], .input[type="password"] {
     width: 300px;
     padding: 10px;
     margin: 10px 0;
@@ -26,24 +26,24 @@ input[type="text"], input[type="password"] {
     outline: none;
 }
 
-input[type="text"]:focus, input[type="password"]:focus {
-    border-color: #007BFF;
+.input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #011020;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-button {
+.button {
     width: 320px;
     padding: 10px;
     margin-top: 20px;
     border: none;
     border-radius: 4px;
-    background-color: #007BFF;
+    background-color: #052f5c;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #0056b3;
+.button:hover {
+    background-color: #353d34;
 }

@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useContext(AuthContext);
-  const navigate = useNavigate();  // Updated variable name
+  const history = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ const LoginForm = () => {
       login(data);
 
       // Redirect to home page after successful login
-      navigate('/home');  // Updated redirection
+      history.push('/home');
       window.location.reload(); // Reload the page to ensure context is properly set
     } catch (error) {
       console.error('Login Error:', error);
@@ -68,7 +68,7 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <FaLock className='icon' />
+          <FaLock className='icon'/>
         </div>
         <div className="show-password-checkbox">
           <input
