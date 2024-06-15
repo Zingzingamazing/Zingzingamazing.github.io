@@ -4,12 +4,12 @@ import './home.css';
 
 const Home = () => {
   const [ads, setAds] = useState([]);
-  const navigate = useNavigate(); // Add this line
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        const response = await fetch('http://localhost:3001/ads');
+        const response = await fetch('http://localhost:3001/ads?status=approved');
         const data = await response.json();
         
         if (Array.isArray(data)) {
@@ -28,7 +28,7 @@ const Home = () => {
   }, []);
 
   const handleLogout = () => {
-    navigate('/login'); // Use navigate here
+    navigate('/login');
   };
 
   return (
@@ -36,10 +36,9 @@ const Home = () => {
       <div className="menu-bar">
         <div className="logo">Team 007</div>
         <nav className="nav-links">
-          <a href="/">Home</a>
-          <a href="/">About</a>
+          <a href="/home">Home</a>
+          <a href="/home">About</a>
           <a href="/adcampaign">Add Your Campaign</a>
-          
         </nav>
         <div className="user-section">
           <button onClick={handleLogout}>Logout</button>
@@ -47,7 +46,7 @@ const Home = () => {
       </div>
       <div className="advertisement-list">
         {ads.map((ad) => (
-          <div className="advertisement-card" key={ad.id}>
+          <div className="advertisement-card" key={ad._id}>
             <div
               className="advertisement-image"
               style={{ backgroundImage: `url(http://localhost:3001${ad.image_url})` }}
@@ -55,6 +54,7 @@ const Home = () => {
             <div className="card-content">
               <div className="advertisement-title">{ad.title}</div>
               <div className="advertisement-description">{ad.description}</div>
+              <div className="advertisement-publisher"><strong>Publisher:</strong> {ad.publisher}</div> {/* Added publisher info */}
             </div>
             <div className="card-footer">
               <span className="dot"></span>

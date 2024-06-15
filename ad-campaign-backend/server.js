@@ -110,11 +110,11 @@ app.get('/users', (req, res) => {
 });
 
 app.post('/ads', upload.single('image'), (req, res) => {
-    const { userId, title, description, userType } = req.body;
+    const { userId, title, description, userType, publisher } = req.body;
     const imageUrl = `/uploads/${req.file.filename}`;
 
-    const query = 'INSERT INTO ads (user_id, title, description, image_url, user_type, approved) VALUES (?, ?, ?, ?, ?, 0)';
-    connection.query(query, [userId, title, description, imageUrl, userType], (err, results) => {
+    const query = 'INSERT INTO ads (user_id, title, description, image_url, user_type, publisher, approved) VALUES (?, ?, ?, ?, ?, ?, 0)';
+    connection.query(query, [userId, title, description, imageUrl, userType, publisher], (err, results) => {
         if (err) {
             console.error('Error uploading ad:', err);
             res.status(500).json({ message: 'Error uploading ad' });
@@ -146,6 +146,19 @@ app.post('/ads/approve/:id', (req, res) => {
             return;
         }
         res.status(200).json({ message: 'Ad approved successfully' });
+    });
+});
+
+app.post('/ads/reject/:id', (req, res) => {
+    const adId = req.params.id;
+    const query = 'DELETE FROM ads WHERE id = ?';
+    connection.query(query, [adId], (err, results) => {
+        if (err) {
+            console.error('Error rejecting ad:', err);
+            res.status(500).json({ message: 'Error rejecting ad' });
+            return;
+        }
+        res.status(200).json({ message: 'Ad rejected successfully' });
     });
 });
 

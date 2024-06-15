@@ -8,13 +8,12 @@ const AdCampaign = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
+    const [publisher, setPublisher] = useState(''); // New state for publisher
     const navigate = useNavigate();
 
     const handleUserTypeChange = (event) => {
         setUserType(event.target.value);
     };
-      
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -23,6 +22,7 @@ const AdCampaign = () => {
         formData.append('description', description);
         formData.append('image', image);
         formData.append('userType', userType);
+        formData.append('publisher', publisher); // Add publisher to form data
 
         try {
             await axios.post('http://localhost:3001/ads', formData, {
@@ -38,20 +38,20 @@ const AdCampaign = () => {
 
     const handleLogout = () => {
         navigate('/login'); // Use navigate here
-      };
-    
+    };
+
     return (
         <div className="ad-campaign-container">
-             <div className="menu-bar">
-        <div className="logo">Team 007</div>
-        <nav className="nav-links">
-          <a href="/">Home</a>
-          <a href="/">About</a>          
-        </nav>
-        <div className="user-section">
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      </div>
+            <div className="menu-bar">
+                <div className="logo">Team 007</div>
+                <nav className="nav-links">
+                    <a href="/home">Home</a>
+                    <a href="/home">About</a>
+                </nav>
+                <div className="user-section">
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
+            </div>
             <h2>Create Ad Campaign</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -75,6 +75,10 @@ const AdCampaign = () => {
                 <div className="form-group">
                     <label>Upload Image</label>
                     <input type="file" onChange={(e) => setImage(e.target.files[0])} required />
+                </div>
+                <div className="form-group">
+                    <label>Publisher Name</label> {/* New field for publisher name */}
+                    <input type="text" value={publisher} onChange={(e) => setPublisher(e.target.value)} required />
                 </div>
                 <button type="submit">Submit Ad</button>
             </form>
