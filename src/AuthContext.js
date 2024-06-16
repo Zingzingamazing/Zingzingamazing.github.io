@@ -1,38 +1,52 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
+
+
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            try {
-                const decoded = jwtDecode(token);  // Corrected usage
-                setUser(decoded);
-            } catch (error) {
-                console.error('Invalid token:', error);
-                setUser(null);
-            }
-        }
-    }, []);
-
-    const login = ({ token }) => {  // Destructuring to get token
-        localStorage.setItem('token', token);
-        const decoded = jwtDecode(token);  // Corrected usage
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
         setUser(decoded);
-    };
-
-    const logout = () => {
-        localStorage.removeItem('token');
+        setIsAdmin(decoded.isAdmin || false);
+      } catch (error) {
+        console.error('Invalid token:', error);
         setUser(null);
-    };
+        setIsAdmin(false);
+      }
+    }
+  }, []);
 
-    return (
-        <AuthContext.Provider value={{ user, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const login = (token) => {
+    localStorage.setItem('token', token);
+    const decoded = jwtDecode(token);
+    setUser(decoded);
+    setIsAdmin(decoded.isAdmin || false);
+  };
+
+  const loginAdmin = (token) => {
+    localStorage.setItem('token', token);
+    const decoded = jwtDecode(token);
+    setUser(decoded);
+    setIsAdmin(true);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    setIsAdmin(false);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, isAdmin, login, loginAdmin, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

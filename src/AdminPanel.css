@@ -1,42 +1,98 @@
 .admin-panel-container {
-    max-width: 800px;
+    min-width: 600px;
+    min-height: 300px;
     margin: 50px auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.admin-panel-container h2 {
+  }
+  
+  .admin-panel-container h2 {
     text-align: center;
     margin-bottom: 20px;
-}
-
-.admin-panel-container ul {
+  }
+  
+  .manage-users-link {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .manage-users-link:hover {
+    text-decoration: underline;
+  }
+  
+  .ads-list {
     list-style-type: none;
     padding: 0;
-}
-
-.admin-panel-container li {
+    margin: 0;
+  }
+  
+  .ad-item {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
     border-bottom: 1px solid #ccc;
-    padding: 10px 0;
-}
-
-.admin-panel-container img {
-    max-width: 100px;
-    margin-right: 10px;
-}
-
-.admin-panel-container button {
-    padding: 5px 10px;
-    background-color: #28a745;
-    color: #fff;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .ad-item:last-child {
+    border-bottom: none;
+  }
+  
+  .ad-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .ad-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 5px;
+  }
+  
+  .ad-details h3 {
+    margin: 0 0 10px 0;
+  }
+  
+  .ad-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  .approve-button, .reject-button {
+    padding: 8px 12px;
+    margin-left: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.admin-panel-container button:hover {
+  }
+  
+  .approve-button {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .approve-button:hover {
     background-color: #218838;
-}
+  }
+  
+  .reject-button {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .reject-button:hover {
+    background-color: #c82333;
+  }
+  

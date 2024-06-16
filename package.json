@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^14.0.0",
     "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "firebase": "^10.12.2",
     "helmet": "^7.1.0",

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaRegUserCircle, FaLock } from "react-icons/fa";
-import { AuthContext } from '../../AuthContext'; // Adjust the path as needed
+import { AuthContext } from '../../AuthContext';
 import './login.css';
 
 const LoginForm = () => {
@@ -34,10 +34,10 @@ const LoginForm = () => {
       }
 
       // Save the user data in context
-      login(data);  // Pass the entire data object to login
+      login(data.token);
 
       // Redirect to home page after successful login
-      navigate('/home');  // Corrected the variable name
+      navigate('/home');
     } catch (error) {
       console.error('Login Error:', error);
       setErrorMessage('Incorrect email or password. Please try again.');

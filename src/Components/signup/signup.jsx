@@ -10,7 +10,7 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();  // Updated variable name
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -37,8 +37,7 @@ const SignUpForm = () => {
       }
 
       // Redirect to login page after successful signup
-      navigate('/signin');  // Updated redirection
-      window.location.reload(); // Refresh the page
+      navigate('/signin');
     } catch (error) {
       console.error('Signup Error:', error);
       setErrorMessage(error.message);

@@ -1,12 +1,13 @@
-// AdminPanel.jsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 import './AdminPanel.css';
 
-const AdminPanel = ({ isAdmin }) => {
+const AdminPanel = () => {
   const [ads, setAds] = useState([]);
   const navigate = useNavigate();
+  const { isAdmin } = useContext(AuthContext);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -19,7 +20,7 @@ const AdminPanel = ({ isAdmin }) => {
         const response = await axios.get('http://localhost:3001/ads/pending');
         setAds(response.data);
       } catch (error) {
-        console.error('Error fetching ads:', error);
+        console.error('Error fetching ads:', error.response?.data || error.message);
       }
     };
 
@@ -31,7 +32,7 @@ const AdminPanel = ({ isAdmin }) => {
       await axios.post(`http://localhost:3001/ads/approve/${adId}`);
       setAds(ads.filter(ad => ad.id !== adId));
     } catch (error) {
-      console.error('Error approving ad:', error);
+      console.error('Error approving ad:', error.response?.data || error.message);
     }
   };
 
@@ -40,23 +41,37 @@ const AdminPanel = ({ isAdmin }) => {
       await axios.post(`http://localhost:3001/ads/reject/${adId}`);
       setAds(ads.filter(ad => ad.id !== adId));
     } catch (error) {
-      console.error('Error rejecting ad:', error);
+      console.error('Error rejecting ad:', error.response?.data || error.message);
+    }
+  };
+
+  const handleManageUsersClick = () => {
+    if (isAdmin) {
+      navigate('/users');
+    } else {
+      navigate('/admin/login');
     }
   };
 
   return (
     <div className="admin-panel-container">
       <h2>Admin Panel</h2>
-      <Link to="/users">Manage Users</Link>
-      <ul>
+      <button onClick={handleManageUsersClick} className="manage-users-link">Manage Users</button>
+      <ul className="ads-list">
         {ads.map((ad) => (
-          <li key={ad.id}>
-            <h3>{ad.title}</h3>
-            <p>{ad.description}</p>
-            <p><strong>Publisher:</strong> {ad.publisher}</p>
-            <img src={ad.imageUrl} alt={ad.title} style={{ width: '100px' }} />
-            <button onClick={() => handleApprove(ad.id)}>Approve</button>
-            <button onClick={() => handleReject(ad.id)}>Reject</button>
+          <li key={ad.id} className="ad-item">
+            <div className="ad-details">
+              <img src={ad.image_url} alt={ad.title} className="ad-image" />
+              <div>
+                <h3>{ad.title}</h3>
+                <p>{ad.description}</p>
+                <p><strong>Publisher:</strong> {ad.publisher}</p>
+              </div>
+            </div>
+            <div className="ad-actions">
+              <button onClick={() => handleApprove(ad.id)} className="approve-button">Approve</button>
+              <button onClick={() => handleReject(ad.id)} className="reject-button">Reject</button>
+            </div>
           </li>
         ))}
       </ul>

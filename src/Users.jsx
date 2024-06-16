@@ -1,42 +1,79 @@
-// Users.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
+import './Users.css';
 
-const Users = ({ isAdmin }) => {
-  const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
+const Users = () => {
+    const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
+    const { isAdmin } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (!isAdmin) {
-      navigate('/admin/login');
-      return;
-    }
+    useEffect(() => {
+        if (!isAdmin) {
+            navigate('/admin/login');
+            return;
+        }
 
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/users');
-        const data = await response.json();
-        setUsers(data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
+        const fetchUsers = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:3001/users', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setUsers(response.data);
+            } catch (error) {
+                console.error('Error fetching users:', error.response?.data || error.message);
+            }
+        };
+
+        fetchUsers();
+    }, [isAdmin, navigate]);
+
+    const handleDelete = async (userId) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete(`http://localhost:3001/users/${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setUsers(users.filter(user => user.id !== userId));
+        } catch (error) {
+            console.error('Error deleting user:', error.response?.data || error.message);
+        }
     };
 
-    fetchUsers();
-  }, [isAdmin, navigate]);
+    if (!isAdmin) return null;
 
-  return (
-    <div>
-      <h2>All Users</h2>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.username} - {user.email} {/* Adjust the fields based on your user data */}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    return (
+        <div className="users-container">
+            <h2>Manage Users</h2>
+            <button onClick={() => navigate('/admin')}>Back to Admin Panel</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((user) => (
+                        <tr key={user.id}>
+                            <td>{user.username}</td>
+                            <td>{user.email}</td>
+                            <td>
+                                <button onClick={() => handleDelete(user.id)}>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 };
 
 export default Users;

@@ -26,7 +26,8 @@ if (!fs.existsSync(uploadDir)) {
 
 // Middleware to authenticate and attach user info to req
 const authenticate = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1];
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ message: 'No token provided' });
@@ -37,7 +38,29 @@ const authenticate = (req, res, next) => {
             return res.status(401).json({ message: 'Failed to authenticate token' });
         }
 
-        // If everything is good, save the user info for use in other routes
+        req.user = decoded;
+        next();
+    });
+};
+
+// Middleware to check if the user is an admin
+const authenticateAdmin = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Failed to authenticate token' });
+        }
+
+        if (!decoded.isAdmin) {
+            return res.status(403).json({ message: 'Not authorized' });
+        }
+
         req.user = decoded;
         next();
     });
@@ -51,6 +74,8 @@ const authenticate = (req, res, next) => {
             password: process.env.DB_PASS,
             database: process.env.DB_NAME
         });
+
+        console.log('Database connected successfully');
 
         const storage = multer.diskStorage({
             destination: (req, file, cb) => {
@@ -148,7 +173,12 @@ const authenticate = (req, res, next) => {
                     return res.status(401).json({ message: 'Invalid email or password' });
                 }
 
-                res.status(200).json(admin);
+                // Create a token with admin credentials included
+                const token = jwt.sign({ id: admin.id, email: admin.email, username: admin.username, isAdmin: true }, process.env.JWT_SECRET, {
+                    expiresIn: '24h' // expires in 24 hours
+                });
+
+                res.status(200).json({ token });
             } catch (err) {
                 console.error('Error during admin login:', err);
                 res.status(500).json({ message: 'Error during admin login' });
@@ -226,13 +256,24 @@ const authenticate = (req, res, next) => {
             }
         });
 
-        app.get('/users', async (req, res) => {
+        app.get('/users', authenticateAdmin, async (req, res) => {
             try {
                 const [results] = await connection.execute('SELECT * FROM users');
                 res.status(200).json(results);
             } catch (err) {
                 console.error('Error fetching users:', err);
                 res.status(500).json({ message: 'Error fetching users' });
+            }
+        });
+
+        app.delete('/users/:id', authenticateAdmin, async (req, res) => {
+            try {
+                const userId = req.params.id;
+                await connection.execute('DELETE FROM users WHERE id = ?', [userId]);
+                res.status(200).json({ message: 'User deleted successfully' });
+            } catch (err) {
+                console.error('Error deleting user:', err);
+                res.status(500).json({ message: 'Error deleting user' });
             }
         });
 

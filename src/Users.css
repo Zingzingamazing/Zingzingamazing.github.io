@@ -1,0 +1,57 @@
+.users-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    height:auto;
+    margin: 50px auto;
+}
+
+.users-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.users-container button {
+    display: block;
+    margin: 15px auto 20px;
+    padding: 10px 20px;
+    background-color: #040b13;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.users-container button:hover {
+    background-color: #0056b3
+}
+
+.users-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.users-container th, .users-container td {
+    padding: 10px;
+    text-align: left;
+    border-radius: 0px;
+    border-bottom: 1px solid #ddd;
+}
+
+.users-container th {
+    background-color: #007bff;
+    color: white;
+}
+
+.users-container tr:hover {
+    background-color: #f1f1f1;
+}
+
+.users-container tr:last-child td {
+    border-bottom: none;
+}

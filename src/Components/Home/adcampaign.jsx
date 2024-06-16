@@ -83,7 +83,7 @@ const AdCampaign = () => {
                     <label>Upload Image</label>
                     <input type="file" onChange={(e) => setImage(e.target.files[0])} required />
                 </div>
-                <button type="submit">Submit Ad</button>
+                <button type="submit">Submit</button>
             </form>
         </div>
     );

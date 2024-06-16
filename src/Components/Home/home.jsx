@@ -45,7 +45,7 @@ const Home = () => {
         </nav>
         <div className="user-section">
           <span className="username">{user?.username}</span>
-          <button onClick={handleLogout}>Logout</button>
+          <button className="button" onClick={handleLogout}>Logout</button>
         </div>
       </div>
       <div className="advertisement-list">

@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 import './AdminLogin.css';
 
-const AdminLogin = ({ setAdminAuthenticated }) => {
+const AdminLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const { loginAdmin } = useContext(AuthContext);
 
     const handleLogin = async () => {
         try {
             const response = await axios.post('http://localhost:3001/admin/login', { email, password });
             if (response.status === 200) {
-                setAdminAuthenticated(true);
+                loginAdmin(response.data.token);
                 navigate('/admin');
             } else {
                 alert('Invalid credentials');
             }
         } catch (error) {
-            console.error('Error logging in:', error);
-            alert('Error logging in');
+            console.error('Error logging in:', error.response?.data || error.message);
+            alert(`Error logging in: ${error.response?.data?.message || error.message}`);
         }
     };
 
