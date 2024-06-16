@@ -44,6 +44,9 @@ const AdminPanel = () => {
       console.error('Error rejecting ad:', error.response?.data || error.message);
     }
   };
+  const handleUsersHomeClick = () => {
+      navigate('/home');
+  };
 
   const handleManageUsersClick = () => {
     if (isAdmin) {
@@ -52,10 +55,11 @@ const AdminPanel = () => {
       navigate('/admin/login');
     }
   };
-
+  
   return (
     <div className="admin-panel-container">
       <h2>Admin Panel</h2>
+      <button onClick={handleUsersHomeClick} className="manage-users-link">Go back to home page</button>
       <button onClick={handleManageUsersClick} className="manage-users-link">Manage Users</button>
       <ul className="ads-list">
         {ads.map((ad) => (

@@ -5,12 +5,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  position: fixed; /* Make the menu bar fixed */
+  position: fixed;
   top: 5px;
   left: 5px;
   right: 5px;
-  height: 60px; /* Adjust the height if necessary */
-  z-index: 1000; /* Ensure it stays on top */
+  height: 60px;
+  z-index: 1000;
   border-radius: 10px;
 }
 
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   border-radius: 10px;
-  padding: 5px 10px; /* Added padding */
+  padding: 5px 10px;
 }
 
 .username {
@@ -38,13 +38,12 @@
   height: auto;
   width: 100px;
   border-radius: 5px;
-  text-decoration: solid;
   background-color: aqua;
-  margin-right: 30px; /* Added margin to separate the username and logout button */
+  margin-right: 30px;
 }
 
 .button {
-  background-color: #ff4d4d; /* Change button background color to make it distinct */
+  background-color: #ff4d4d;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -53,7 +52,11 @@
 }
 
 .button:hover {
-  background-color: #af0b0b; /* Change button hover color */
+  background-color: #af0b0b;
+}
+
+.dashboard-container {
+  padding-top: 80px;
 }
 
 .advertisement-list {
@@ -61,12 +64,11 @@
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
-  margin-top: 80px; /* To avoid overlap with the menu bar */
 }
 
 .advertisement-card {
-  min-height: 100px;
-  min-width: 100px;
+  width: 300px;
+  height: 400px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -75,20 +77,24 @@
   transition: transform 0.3s;
 }
 
-.advertisement-card:hover {
-  transform: scale(1.05);
-}
+
 
 .advertisement-image {
   width: 100%;
   height: 200px;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   margin-bottom: 10px;
+  background-color: #f0f0f0; /* Temporary background color for visibility */
+}
+
+.advertisement-card:hover {
+  transform: scale(1.05);
 }
 
 .card-content {
-  padding: 10px;
+  padding: 20px;
 }
 
 .advertisement-title {
@@ -106,6 +112,11 @@
 .advertisement-publisher {
   font-size: 14px;
   color: #555;
+}
+.dvertisement-image{
+  image-rendering: auto;
+  position: fixed;
+  align-items: center;
 }
 
 .card-footer {

@@ -1,6 +1,6 @@
 .admin-panel-container {
     min-width: 600px;
-    min-height: 300px;
+    min-height: 600px;
     margin: 50px auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -16,10 +16,11 @@
   
   .manage-users-link {
     display: block;
+    margin-bottom: 2px;
     text-align: center;
     margin-bottom: 20px;
     font-size: 18px;
-    color: #007bff;
+    color: #ecedee;
     text-decoration: none;
   }
   

@@ -50,7 +50,7 @@ const Home = () => {
       </div>
       <div className="advertisement-list">
         {ads.map((ad) => (
-          <div className="advertisement-card" key={ad._id}>
+          <div className="advertisement-card" key={ad.id}>
             <div
               className="advertisement-image"
               style={{ backgroundImage: `url(http://localhost:3001${ad.image_url})` }}
