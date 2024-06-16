@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
@@ -9,13 +8,34 @@ const path = require('path');
 const helmet = require('helmet');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Define allowed origins
+const allowedOrigins = ['http://localhost:3000']; // Replace with your frontend URL
+
+// CORS configuration
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
+}));
+
 app.use(bodyParser.json());
-app.use(cors());
-app.use(helmet());
+
+// Helmet configuration with crossOriginResourcePolicy set to false
+app.use(helmet({
+    crossOriginResourcePolicy: false
+}));
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Ensure the uploads directory exists

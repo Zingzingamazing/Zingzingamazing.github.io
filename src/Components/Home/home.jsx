@@ -54,7 +54,9 @@ const Home = () => {
             <div
               className="advertisement-image"
               style={{ backgroundImage: `url(http://localhost:3001${ad.image_url})` }}
-            ></div>
+            >
+              {console.log(`Image URL: http://localhost:3001${ad.image_url}`)}
+            </div>
             <div className="card-content">
               <div className="advertisement-title">{ad.title}</div>
               <div className="advertisement-description">{ad.description}</div>

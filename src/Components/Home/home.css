@@ -77,7 +77,9 @@
   transition: transform 0.3s;
 }
 
-
+.advertisement-card:hover {
+  transform: scale(1.05);
+}
 
 .advertisement-image {
   width: 100%;
@@ -86,15 +88,10 @@
   background-position: center;
   background-repeat: no-repeat;
   margin-bottom: 10px;
-  background-color: #f0f0f0; /* Temporary background color for visibility */
-}
-
-.advertisement-card:hover {
-  transform: scale(1.05);
 }
 
 .card-content {
-  padding: 20px;
+  padding: 10px;
 }
 
 .advertisement-title {
@@ -112,11 +109,6 @@
 .advertisement-publisher {
   font-size: 14px;
   color: #555;
-}
-.dvertisement-image{
-  image-rendering: auto;
-  position: fixed;
-  align-items: center;
 }
 
 .card-footer {
