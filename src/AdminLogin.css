@@ -9,14 +9,14 @@
     background-color: #f5f5f5;
 }
 
-.h2 {
+.login-container h2 {
     margin-bottom: 20px;
     color: #333;
     font-size: 24px;
     font-weight: 500;
 }
 
-.input[type="text"], .input[type="password"] {
+.login-container input[type="text"], .login-container input[type="password"] {
     width: 300px;
     padding: 10px;
     margin: 10px 0;
@@ -26,12 +26,12 @@
     outline: none;
 }
 
-.input[type="text"]:focus, input[type="password"]:focus {
+.login-container input[type="text"]:focus, input[type="password"]:focus {
     border-color: #011020;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-.button {
+.login-container button {
     width: 320px;
     padding: 10px;
     margin-top: 20px;
@@ -44,6 +44,6 @@
     transition: background-color 0.3s ease;
 }
 
-.button:hover {
+.login-container button:hover {
     background-color: #353d34;
 }

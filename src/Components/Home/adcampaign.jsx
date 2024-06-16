@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './adcampaign.css';
+import { AuthContext } from '../../AuthContext'; // Adjust the path as needed
 
 const AdCampaign = () => {
     const [userType, setUserType] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
-    const [publisher, setPublisher] = useState(''); // New state for publisher
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext); // Get user info from context
 
     const handleUserTypeChange = (event) => {
         setUserType(event.target.value);
@@ -22,22 +23,27 @@ const AdCampaign = () => {
         formData.append('description', description);
         formData.append('image', image);
         formData.append('userType', userType);
-        formData.append('publisher', publisher); // Add publisher to form data
+        formData.append('publisher', user.username); // Automatically set publisher to username
 
         try {
+            const token = localStorage.getItem('token');
             await axios.post('http://localhost:3001/ads', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}` // Add token to headers
                 },
             });
             alert('Ad submitted for approval!');
+            navigate('/home'); // Redirect to home after successful submission
         } catch (error) {
             console.error('Error uploading ad:', error);
+            alert('Error uploading ad. Please try again.');
         }
     };
 
     const handleLogout = () => {
-        navigate('/login'); // Use navigate here
+        localStorage.removeItem('token'); // Remove the token on logout
+        navigate('/signin'); // Use navigate here
     };
 
     return (
@@ -49,6 +55,7 @@ const AdCampaign = () => {
                     <a href="/home">About</a>
                 </nav>
                 <div className="user-section">
+                    <span className="username">{user?.username}</span>
                     <button onClick={handleLogout}>Logout</button>
                 </div>
             </div>
@@ -75,10 +82,6 @@ const AdCampaign = () => {
                 <div className="form-group">
                     <label>Upload Image</label>
                     <input type="file" onChange={(e) => setImage(e.target.files[0])} required />
-                </div>
-                <div className="form-group">
-                    <label>Publisher Name</label> {/* New field for publisher name */}
-                    <input type="text" value={publisher} onChange={(e) => setPublisher(e.target.value)} required />
                 </div>
                 <button type="submit">Submit Ad</button>
             </form>

@@ -7,6 +7,8 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const helmet = require('helmet');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,6 +17,31 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(helmet());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Ensure the uploads directory exists
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+// Middleware to authenticate and attach user info to req
+const authenticate = (req, res, next) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Failed to authenticate token' });
+        }
+
+        // If everything is good, save the user info for use in other routes
+        req.user = decoded;
+        next();
+    });
+};
 
 (async () => {
     try {
@@ -54,23 +81,33 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
             }
         });
 
-        app.post('/login', async (req, res) => {
+        app.post('/signin', async (req, res) => {
             try {
                 const { email, password } = req.body;
+                console.log('Login request received for email:', email);
+
                 const [results] = await connection.execute('SELECT * FROM users WHERE email = ?', [email]);
+                console.log('Query results:', results);
 
                 if (results.length === 0) {
+                    console.log('No user found with this email');
                     return res.status(401).json({ message: 'Invalid email or password' });
                 }
 
                 const user = results[0];
                 const isValidPassword = bcrypt.compareSync(password, user.password);
+                console.log('Password comparison result:', isValidPassword);
 
                 if (!isValidPassword) {
                     return res.status(401).json({ message: 'Invalid email or password' });
                 }
 
-                res.status(200).json(user);
+                // Create a token with username included
+                const token = jwt.sign({ id: user.id, email: user.email, username: user.username }, process.env.JWT_SECRET, {
+                    expiresIn: '24h' // expires in 24 hours
+                });
+
+                res.status(200).json({ token, username: user.username });
             } catch (err) {
                 console.error('Error during login:', err);
                 res.status(500).json({ message: 'Error during login' });
@@ -118,10 +155,25 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
             }
         });
 
-        app.post('/ads', upload.single('image'), async (req, res) => {
+        app.post('/ads', [authenticate, upload.single('image')], async (req, res) => {
             try {
-                const { userId, title, description, userType, publisher } = req.body;
+                const { title, description, userType, publisher } = req.body;
+                const userId = req.user.id;
+
+                if (!title || !description || !userType || !publisher || !req.file) {
+                    return res.status(400).json({ message: 'All fields are required' });
+                }
+
                 const imageUrl = `/uploads/${req.file.filename}`;
+
+                console.log('Ad submission:', {
+                    userId,
+                    title,
+                    description,
+                    imageUrl,
+                    userType,
+                    publisher
+                });
 
                 const query = 'INSERT INTO ads (user_id, title, description, image_url, user_type, publisher, approved) VALUES (?, ?, ?, ?, ?, ?, 0)';
                 await connection.execute(query, [userId, title, description, imageUrl, userType, publisher]);

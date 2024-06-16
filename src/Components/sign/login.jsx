@@ -10,12 +10,12 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useContext(AuthContext);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/login', {
+      const response = await fetch('http://localhost:3001/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -23,23 +23,21 @@ const LoginForm = () => {
         body: JSON.stringify({ email, password })
       });
 
+      const data = await response.json();
+
       if (response.status === 401) {
         setErrorMessage('Invalid email or password');
         return;
       } else if (!response.ok) {
-        const data = await response.json();
         setErrorMessage(data.message || 'Error occurred during login. Please try again.');
         return;
       }
 
-      const data = await response.json();
-
       // Save the user data in context
-      login(data);
+      login(data);  // Pass the entire data object to login
 
       // Redirect to home page after successful login
-      history.push('/home');
-      window.location.reload(); // Reload the page to ensure context is properly set
+      navigate('/home');  // Corrected the variable name
     } catch (error) {
       console.error('Login Error:', error);
       setErrorMessage('Incorrect email or password. Please try again.');

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './home.css';
+import { AuthContext } from '../../AuthContext'; // Adjust the path as needed
 
 const Home = () => {
   const [ads, setAds] = useState([]);
   const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchAds = async () => {
@@ -28,7 +30,8 @@ const Home = () => {
   }, []);
 
   const handleLogout = () => {
-    navigate('/login');
+    logout();
+    navigate('/signin');
   };
 
   return (
@@ -41,6 +44,7 @@ const Home = () => {
           <a href="/adcampaign">Add Your Campaign</a>
         </nav>
         <div className="user-section">
+          <span className="username">{user?.username}</span>
           <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
@@ -54,11 +58,11 @@ const Home = () => {
             <div className="card-content">
               <div className="advertisement-title">{ad.title}</div>
               <div className="advertisement-description">{ad.description}</div>
-              <div className="advertisement-publisher"><strong>Publisher:</strong> {ad.publisher}</div> {/* Added publisher info */}
+              <div className="advertisement-publisher"><strong>Publisher:</strong> {ad.publisher}</div>
             </div>
             <div className="card-footer">
               <span className="dot"></span>
-              <span className="likes">68</span>
+              <span className="likes"></span>
             </div>
           </div>
         ))}
